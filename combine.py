@@ -12,21 +12,34 @@ def combine():
         file_dir=input('请输入文件夹地址：')
     file_dir+='\\'
     postfix=input('请输入需要合并的文件类型：')
-    files=[]
-    for dirpath,dirnames,filenames in os.walk(file_dir):
-        print (dirpath,dirnames,filenames)
-    #     for each in filenames:
-    #         if postfix in each and (not 'basic_clean_' in each):
-    #             files.append(each)    
-
-
-    # #清洗过程
+    files={}
+    for each in os.walk(file_dir):
+        file_paths=each[1]
+        break
+    for each in file_paths:
+        for every in os.walk(file_dir+each+'\\'):
+            for eachone in every[2]:
+                if eachone not in files.keys():
+                    files[eachone]=[]
+                files[eachone].append(file_dir+each+'\\'+eachone)
     # print (files)
-    # for each in files:
-    #     print ('{}处理中'.format(each))
-    #     basic_cleasing(file_dir,each,sep)
-    
-    # print ('done')
+
+    for each in files.keys():
+        i=0
+        with open(file_dir+each,'w',encoding='utf_8_sig') as new:
+            for every in files[each]:
+                with open(every,'r',encoding='utf-8') as old:
+                    if i!=0:
+                        old.readline()
+                    new.write(old.read())
+                    i+=1
+                    print (every)
+
+
+
+
+
+    print ('done')
 
 if __name__=='__main__':
     combine()
