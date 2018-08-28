@@ -3,8 +3,6 @@
 鑫磊以{∏}为分隔符,GBK编码
 '''
 
-import pandas as pd
-from pandas import DataFrame
 import codecs,os,chardet
 
 def get_charset(filepath):
@@ -17,9 +15,10 @@ def get_charset(filepath):
 def basic_cleasing(file_dir, filename ,sep=''):
     with codecs.open(file_dir+filename, 'r', encoding=get_charset(file_dir+filename)) as f:
         with open('{}basic_clean_{}'.format(file_dir, filename), 'w', encoding='utf_8_sig') as new:
-            content=f.read().replace(',','，').replace('\'','’').replace(';','；').replace('(','（').replace(')','）')
+            content=f.read().replace(',','，').replace('\'','’').replace(';','；').replace('(','（').replace(')','）').replace(r'"','”')
             if sep !='':
                 content=content.replace(sep,',')
+            content=content.replace(',.00,',',0.00,')
             new.write(content)
 
 def trans():
